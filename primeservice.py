@@ -1,5 +1,6 @@
 import rpyc
 
+#Server capable of returning primes <= a number
 class PrimeService(rpyc.Service):
     def on_connect(self):
         #initialize
@@ -9,7 +10,8 @@ class PrimeService(rpyc.Service):
         #finalize
         pass
 
-    def isprime(n):
+#check if prime
+    def isprime(self,n):
         if n < 2:
             return False
         elif n == 2: 
@@ -18,15 +20,16 @@ class PrimeService(rpyc.Service):
             if not n % x: return False
         return True
 
+#check for primes <= a number n.
+#return array
     def exposed_primesLessThanEqualTo(self,n):
         primes = []
         x=2
         for x in range(2,n):
-            if isprime(x):
+            if self.isprime(x):
                 primes.append(x)
         return primes
 
-if __name__== "__main__":
-    from rpyc.utils.server import ThreadedServer
-    t = ThreadedServer(PrimeService, port = 12345)
-
+from rpyc.utils.server import ThreadedServer
+t = ThreadedServer(PrimeService, port = 12345)
+t.start()
