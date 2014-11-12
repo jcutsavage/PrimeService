@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rpyc
 
 #Server capable of returning primes <= a number
